@@ -1,103 +1,64 @@
-import json
-import os
 from inventario import Inventario
 from producto import Producto
 
-ARCHIVO_INVENTARIO = "inventario.json"
-
-def guardar_inventario(inventario):
-    """
-    Guarda el inventario en un archivo JSON.
-    """
-    try:
-        with open(ARCHIVO_INVENTARIO, "w") as f:
-            json.dump(inventario.get_productos_para_guardar(), f, indent=4)
-        print("✅ Inventario guardado con éxito.")
-    except Exception as e:
-        print(f"❌ Error al guardar el inventario: {e}")
-
-def cargar_inventario():
-    """
-    Carga el inventario desde un archivo JSON.
-    """
-    inventario = Inventario()
-    if os.path.exists(ARCHIVO_INVENTARIO):
-        try:
-            with open(ARCHIVO_INVENTARIO, "r") as f:
-                datos = json.load(f)
-                inventario.cargar_productos_desde_json(datos)
-            print("✅ Inventario cargado desde el archivo.")
-        except json.JSONDecodeError:
-            print("⚠️ Archivo de inventario corrupto o vacío. Se iniciará uno nuevo.")
-        except Exception as e:
-            print(f"❌ Error al cargar el inventario: {e}")
-    else:
-        print("📦 No se encontró el archivo de inventario. Iniciando con un inventario vacío.")
-    return inventario
 
 def main():
-    """
-    Función principal del programa.
-    """
-    inventario = cargar_inventario()
+    inventario = Inventario()
 
     while True:
-        print("\n--- SISTEMA DE GESTIÓN DE INVENTARIO ---")
+        print("\n--- Sistema de Gestión de Inventarios ---")
         print("1. Añadir producto")
         print("2. Eliminar producto")
         print("3. Actualizar producto")
-        print("4. Buscar producto por nombre")
-        print("5. Mostrar todo el inventario")
-        print("6. Guardar y salir")
+        print("4. Buscar producto")
+        print("5. Mostrar todos")
+        print("6. Salir")
+        opcion = input("Seleccione una opción: ")
 
-        opcion = input("Elige una opción (1-6): ")
-
-        if opcion == "1":
+        if opcion == '1':
             try:
-                id_prod = input("ID del producto: ")
-                nombre = input("Nombre del producto: ")
+                id_prod = input("ID: ")
+                nombre = input("Nombre: ")
                 cantidad = int(input("Cantidad: "))
                 precio = float(input("Precio: "))
-                nuevo_producto = Producto(id_prod, nombre, cantidad, precio)
-                inventario.agregar_producto(nuevo_producto)
+                nuevo_prod = Producto(id_prod, nombre, cantidad, precio)
+                inventario.anadir_producto(nuevo_prod)
             except ValueError:
-                print("❌ Error: La cantidad y el precio deben ser números.")
+                print("Error: Cantidad y precio deben ser números.")
 
-        elif opcion == "2":
+        elif opcion == '2':
             id_prod = input("ID del producto a eliminar: ")
             inventario.eliminar_producto(id_prod)
 
-        elif opcion == "3":
+        elif opcion == '3':
             id_prod = input("ID del producto a actualizar: ")
-
-            nueva_cantidad_str = input("Nueva cantidad (presiona Enter para no cambiar): ")
-            nuevo_precio_str = input("Nuevo precio (presiona Enter para no cambiar): ")
+            nueva_cantidad_str = input("Nueva cantidad (deje en blanco para no cambiar): ")
+            nuevo_precio_str = input("Nuevo precio (deje en blanco para no cambiar): ")
 
             nueva_cantidad = int(nueva_cantidad_str) if nueva_cantidad_str else None
             nuevo_precio = float(nuevo_precio_str) if nuevo_precio_str else None
 
             inventario.actualizar_producto(id_prod, nueva_cantidad, nuevo_precio)
 
-        elif opcion == "4":
-            nombre_busqueda = input("Ingresa el nombre del producto a buscar: ")
-            resultados = inventario.buscar_producto_por_nombre(nombre_busqueda)
+        elif opcion == '4':
+            nombre = input("Nombre a buscar: ")
+            resultados = inventario.buscar_producto_por_nombre(nombre)
             if resultados:
-                print("\n--- Resultados de la búsqueda ---")
-                for producto in resultados:
-                    print(producto)
+                for p in resultados:
+                    print(p)
             else:
-                print("🔎 No se encontraron productos con ese nombre.")
+                print("No se encontraron productos.")
 
-        elif opcion == "5":
-            inventario.mostrar_inventario()
+        elif opcion == '5':
+            inventario.mostrar_productos()
 
-        elif opcion == "6":
-            guardar_inventario(inventario)
-            print("👋 Saliendo del sistema...")
+        elif opcion == '6':
+            print("Saliendo...")
             break
 
         else:
-            print("❌ Opción no válida. Por favor, elige una opción del menú.")
+            print("Opción no válida.")
+
 
 if __name__ == "__main__":
     main()
