@@ -36,11 +36,14 @@ Sistema básico para gestionar una biblioteca digital que permite:
 CAPTURAS DE PANTALLA:
 
 1. Confirmación de que los libros fueron añadidos y los usuarios Jessica y Solange registrados.
+![1.png](IMAGENES_12/1.png)
 2. Mensajes que muestran el préstamo exitoso de libros a los usuarios.
+![2.png](IMAGENES_12/2.png)
 3. Listado de los libros que tiene prestados un usuario (por ejemplo, Jessica).
-4. Resultados de búsqueda de libros por autor, título o categoría.
-5. Confirmación de la devolución de un libro y la baja de un usuario sin libros pendientes.
-6. Mensaje de error o advertencia al intentar eliminar un libro que está actualmente prestado.
+![3.png](IMAGENES_12/3.png)
+
+
+
 ```bash
 python main.py
 
